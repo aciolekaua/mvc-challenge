@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🏗️ Introdução ao Padrão MVC com PHP
 
 > Guia prático para entender e aplicar o padrão de arquitetura **Model-View-Controller** usando **PHP, HTML, CSS e JavaScript**.
@@ -440,3 +441,158 @@ mvc-challenge/
 ---
 
 > **Dica:** A maior armadilha do MVC é misturar as camadas. Sempre se pergunte: *"Isso é dado, visual ou lógica?"* — e coloque no lugar certo. Boa sorte! 💪
+=======
+# MVC Livros
+
+Sistema web em **Node.js + Express** com arquitetura **MVC** (Model–View–Controller), **PostgreSQL**, sessões para o site e **JWT** para a **API REST**. Inclui cadastro de usuários (senha com **bcrypt**), CRUD de livros com **upload de capa**, busca/filtro/paginação, **avaliações** (uma por usuário com edição via *upsert*), **favoritos** e interface **responsiva** (HTML + CSS).
+
+## Estrutura do projeto
+
+```
+mvc-chalenge/
+├── package.json
+├── .env.example
+├── README.md
+├── scripts/
+│   └── schema.sql              # Criação das tabelas
+├── public/
+│   ├── demo.html               # Preview estático (abrir no navegador)
+│   ├── css/style.css
+│   └── uploads/covers/         # Capas enviadas (gitignore exceto .gitkeep)
+├── src/
+│   ├── server.js               # Bootstrap Express, sessão, rotas
+│   ├── config/
+│   │   └── database.js         # Pool pg
+│   ├── models/                 # Acesso a dados (entidades)
+│   │   ├── User.js
+│   │   ├── Book.js
+│   │   ├── Review.js
+│   │   └── Favorite.js
+│   ├── controllers/            # Regras de fluxo HTTP (web)
+│   │   ├── authController.js
+│   │   ├── bookController.js
+│   │   ├── reviewController.js
+│   │   ├── favoriteController.js
+│   │   └── api/                # Controllers da API
+│   ├── middlewares/
+│   │   ├── authWeb.js
+│   │   ├── authApi.js
+│   │   ├── optionalAuthApi.js
+│   │   ├── uploadCover.js
+│   │   ├── validateRequest.js
+│   │   └── errorHandler.js
+│   ├── routes/
+│   │   ├── web.js
+│   │   └── api.js
+│   └── utils/
+│       ├── asyncHandler.js
+│       └── validators.js
+└── views/                      # Camada View (EJS + layout)
+    ├── layout.ejs
+    ├── error.ejs
+    ├── auth/
+    └── books/
+```
+
+## Pré-requisitos
+
+- [Node.js](https://nodejs.org/) 18+
+- [PostgreSQL](https://www.postgresql.org/) 12+
+
+## Configuração do banco
+
+1. Crie o banco e aplique o script:
+
+```bash
+createdb mvc_livros
+psql "$DATABASE_URL" -f scripts/schema.sql
+```
+
+2. Copie variáveis de ambiente:
+
+```bash
+cp .env.example .env
+```
+
+Edite `.env` com `DATABASE_URL`, `SESSION_SECRET` e `JWT_SECRET`.
+
+## Como rodar
+
+```bash
+npm install
+npm run dev
+```
+
+Abra `http://localhost:3000`. A listagem de livros fica em `/books`.
+
+Para **pré-visualizar só o layout** (HTML + CSS, sem backend), abra no navegador o arquivo [`public/demo.html`](public/demo.html) (duplo clique ou arrastar para a janela do navegador). Com o servidor rodando, o mesmo arquivo fica em `http://localhost:3000/demo.html`.
+
+## Rotas web (RESTful onde aplicável)
+
+| Método | Caminho | Descrição |
+|--------|---------|-----------|
+| GET | `/` | Redireciona para `/books` |
+| GET/POST | `/register` | Cadastro de usuário |
+| GET/POST | `/login` | Login (sessão) |
+| POST | `/logout` | Logout |
+| GET | `/books` | Listagem com `?q=&classification=&page=` |
+| GET | `/books/new` | Formulário novo livro (autenticado) |
+| POST | `/books` | Cria livro + capa opcional (autenticado) |
+| GET | `/books/:id` | Detalhe, média, avaliações, formulário da sua nota |
+| GET | `/books/:id/edit` | Editar livro (autor do cadastro) |
+| PUT | `/books/:id` | Atualiza livro (`_method=PUT` no form) |
+| POST | `/books/:id/reviews` | Cria ou atualiza avaliação (autenticado) |
+| POST | `/books/:id/favorite` | Alterna favorito (autenticado) |
+
+## API REST (`/api/v1`)
+
+Autenticação: cabeçalho `Authorization: Bearer <token>` (obtido em login/registro).
+
+| Método | Caminho | Auth |
+|--------|---------|------|
+| POST | `/api/v1/auth/register` | Não |
+| POST | `/api/v1/auth/login` | Não |
+| GET | `/api/v1/books` | Opcional (marca `is_favorite` se logado) |
+| GET | `/api/v1/books/:id` | Opcional |
+| POST | `/api/v1/books` | Sim (JWT) — `multipart/form-data` |
+| PATCH | `/api/v1/books/:id` | Sim — dono do livro |
+| PUT | `/api/v1/books/:id/reviews` | Sim — corpo JSON `{ "rating": 1-5, "comment": "..." }` |
+| POST | `/api/v1/books/:id/favorite` | Sim |
+
+### Exemplos rápidos (curl)
+
+```bash
+# Registro + token
+curl -s -X POST http://localhost:3000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Ana","email":"ana@example.com","password":"123456"}'
+
+# Listar livros (paginação)
+curl -s "http://localhost:3000/api/v1/books?page=1&q=fantasia"
+
+# Criar livro com capa
+curl -s -X POST http://localhost:3000/api/v1/books \
+  -H "Authorization: Bearer SEU_TOKEN" \
+  -F title="Dom Casmurro" \
+  -F classification=livre \
+  -F genre="Romance" \
+  -F author="Machado de Assis" \
+  -F publisher="Globo" \
+  -F cover=@/caminho/capa.jpg
+```
+
+## Classificações aceitas (campo `classification`)
+
+Valores válidos: `livre`, `10+`, `12+`, `14+`, `16+`, `18+`, `media` (rótulo “nota média” no formulário).
+
+## Segurança
+
+- Senhas armazenadas com **bcrypt** (custo 10).
+- Validação com **express-validator** nos pontos principais.
+- Erros tratados no middleware `errorHandler` (HTML ou JSON conforme o caminho).
+
+## Scripts npm
+
+- `npm start` — produção (node direto)
+- `npm run dev` — desenvolvimento com `--watch` (Node 18+)
+>>>>>>> b0f7131 (primeira-versao-biblioteca)

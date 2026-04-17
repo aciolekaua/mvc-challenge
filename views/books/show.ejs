@@ -1,0 +1,85 @@
+<div class="detail-layout">
+  <div class="detail-cover">
+    <% if (book.cover_path) { %>
+      <img src="<%= publicCoverUrl(book.cover_path) %>" alt="Capa de <%= book.title %>">
+    <% } else { %>
+      <div class="card" style="min-height:280px;display:flex;align-items:center;justify-content:center;color:var(--muted)">Sem capa</div>
+    <% } %>
+  </div>
+  <div>
+    <div class="row" style="justify-content:space-between;align-items:flex-start;gap:1rem">
+      <div>
+        <h1 style="margin-bottom:0.25rem"><%= book.title %></h1>
+        <p class="muted" style="margin:0"><%= book.author %> · <%= book.genre %> · <%= book.publisher %></p>
+        <p class="muted" style="margin:0.35rem 0 0">
+          Classificação: <strong><%= classificationLabels[book.classification] || book.classification %></strong>
+        </p>
+      </div>
+      <div class="row">
+        <% if (currentUser && book.user_id === currentUser.id) { %>
+          <a class="btn secondary small" href="/books/<%= book.id %>/edit">Editar</a>
+        <% } %>
+        <% if (currentUser) { %>
+          <form method="post" action="/books/<%= book.id %>/favorite">
+            <button class="btn secondary small" type="submit">
+              <%= isFavorite ? 'Remover favorito' : 'Favoritar' %>
+            </button>
+          </form>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <h2 style="margin-top:0">Avaliações</h2>
+      <p>
+        <% if (Number(book.review_count) > 0) { %>
+          Média: <span class="stars">★ <%= book.avg_rating %></span>
+          <span class="muted">(<%= book.review_count %> avaliação(ões))</span>
+        <% } else { %>
+          <span class="muted">Ainda não há avaliações.</span>
+        <% } %>
+      </p>
+
+      <% if (currentUser) { %>
+        <h3><%= userReview ? 'Editar sua avaliação' : 'Sua avaliação' %></h3>
+        <form method="post" action="/books/<%= book.id %>/reviews" style="max-width:520px">
+          <div class="field">
+            <label for="rating">Nota (1 a 5)</label>
+            <select id="rating" name="rating" required>
+              <% [1,2,3,4,5].forEach(function (n) { %>
+                <option value="<%= n %>" <%= userReview && Number(userReview.rating) === n ? 'selected' : '' %>><%= n %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="field">
+            <label for="comment">Comentário (opcional)</label>
+            <textarea id="comment" name="comment" maxlength="2000" placeholder="O que achou do livro?"><%= userReview && userReview.comment ? userReview.comment : '' %></textarea>
+          </div>
+          <button class="btn" type="submit">Salvar avaliação</button>
+        </form>
+      <% } else { %>
+        <p class="muted"><a href="/login">Entre</a> para avaliar este livro.</p>
+      <% } %>
+
+      <h3 style="margin-top:1.5rem">Todas as avaliações</h3>
+      <% if (!reviews.length) { %>
+        <p class="muted">Nenhuma avaliação ainda.</p>
+      <% } %>
+      <% reviews.forEach(function (r) { %>
+        <div class="review-item">
+          <div class="row" style="justify-content:space-between">
+            <strong><%= r.user_name %></strong>
+            <span class="stars">★ <%= r.rating %></span>
+          </div>
+          <% if (r.comment) { %><p style="margin:0.35rem 0 0"><%= r.comment %></p><% } %>
+          <p class="muted" style="margin:0.35rem 0 0;font-size:0.85rem">
+            <%= new Date(r.created_at).toLocaleString('pt-BR') %>
+            <% if (r.updated_at && String(r.updated_at) !== String(r.created_at)) { %> · atualizado<% } %>
+          </p>
+        </div>
+      <% }) %>
+    </div>
+
+    <p style="margin-top:1rem"><a href="/books">← Voltar à listagem</a></p>
+  </div>
+</div>

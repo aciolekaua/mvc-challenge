@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= typeof title !== 'undefined' ? title + ' | ' : '' %>MVC Livros</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container inner">
+      <a class="brand" href="/books">MVC Livros</a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/books">Livros</a>
+        <% if (currentUser) { %>
+          <a href="/books/new">Novo livro</a>
+          <span class="muted"><%= currentUser.name %></span>
+          <form action="/logout" method="post" style="display:inline">
+            <button type="submit" class="btn secondary small">Sair</button>
+          </form>
+        <% } else { %>
+          <a href="/login">Entrar</a>
+          <a href="/register">Cadastro</a>
+        <% } %>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <% if (typeof flash !== 'undefined' && flash) { %>
+      <div class="alert <%= flash.type === 'error' ? 'error' : 'success' %>"><%= flash.message %></div>
+    <% } %>
+    <%- body %>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      API REST em <code>/api/v1</code> — documentação no README.
+    </div>
+  </footer>
+</body>
+</html>

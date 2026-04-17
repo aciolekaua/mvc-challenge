@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preview estático | MVC Livros</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container inner">
+      <a class="brand" href="#">MVC Livros</a>
+      <nav class="nav" aria-label="Principal (demonstração)">
+        <a href="#">Livros</a>
+        <a href="#">Novo livro</a>
+        <span class="muted">Usuário demo</span>
+        <button type="button" class="btn secondary small">Sair</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="alert success">
+      Esta página é só <strong>visual</strong>: abra o arquivo no navegador ou acesse via servidor em <code>/demo.html</code>. Login, banco e API não funcionam aqui.
+    </div>
+
+    <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h1 style="margin:0">Livros</h1>
+      <button type="button" class="btn">Novo livro</button>
+    </div>
+
+    <form class="toolbar card" action="#" method="get" onsubmit="return false" aria-label="Busca (somente layout)">
+      <div class="field">
+        <label for="q">Busca (título, autor ou gênero)</label>
+        <input id="q" name="q" type="text" placeholder="Ex.: fantasia, Clarice...">
+      </div>
+      <div class="field">
+        <label for="classification">Classificação</label>
+        <select id="classification" name="classification">
+          <option value="">Todas</option>
+          <option value="livre">Livre</option>
+          <option value="12+">12 anos</option>
+          <option value="16+">16 anos</option>
+          <option value="media">Nota média (ex.: catálogo escolar)</option>
+        </select>
+      </div>
+      <button class="btn secondary" type="button">Filtrar</button>
+      <button class="btn secondary" type="button">Limpar</button>
+    </form>
+
+    <p class="muted">6 livro(s) — página 1 de 1</p>
+
+    <div class="grid books">
+      <article class="card book-card">
+        <a href="#detalhe">
+          <div class="cover">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232a4a6f'/%3E%3Cstop offset='1' stop-color='%23101826'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' fill='%23e8eef7' font-family='sans-serif' font-size='28' text-anchor='middle' dominant-baseline='middle'%3EDC%3C/text%3E%3C/svg%3E" alt="">
+          </div>
+          <h3>Dom Casmurro</h3>
+        </a>
+        <div class="meta">
+          <span>Machado de Assis</span> · <span>Romance</span>
+        </div>
+        <div class="row" style="margin-top:0.5rem">
+          <span class="badge">Livre</span>
+          <span class="stars" aria-label="Média de avaliações">★ 4.75</span>
+          <span class="muted">(12)</span>
+        </div>
+      </article>
+
+      <article class="card book-card">
+        <a href="#detalhe">
+          <div class="cover">
+            <div style="height:100%;display:flex;align-items:center;justify-content:center;color:#5c6a80;font-size:0.85rem">Sem capa</div>
+          </div>
+          <h3>O Pequeno Príncipe</h3>
+        </a>
+        <div class="meta">
+          <span>Antoine de Saint-Exupéry</span> · <span>Fábula</span>
+        </div>
+        <div class="row" style="margin-top:0.5rem">
+          <span class="badge">Livre</span>
+          <span class="muted">Sem avaliações</span>
+        </div>
+      </article>
+
+      <article class="card book-card">
+        <a href="#detalhe">
+          <div class="cover">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600'%3E%3Crect fill='%233d2a4f' width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' fill='%23e8eef7' font-family='sans-serif' font-size='26' text-anchor='middle' dominant-baseline='middle'%3E1984%3C/text%3E%3C/svg%3E" alt="">
+          </div>
+          <h3>1984</h3>
+        </a>
+        <div class="meta">
+          <span>George Orwell</span> · <span>Ficção científica</span>
+        </div>
+        <div class="row" style="margin-top:0.5rem">
+          <span class="badge">16 anos</span>
+          <span class="stars">★ 4.2</span>
+          <span class="muted">(8)</span>
+        </div>
+      </article>
+
+      <article class="card book-card">
+        <a href="#detalhe">
+          <div class="cover">
+            <div style="height:100%;display:flex;align-items:center;justify-content:center;color:#5c6a80;font-size:0.85rem">Sem capa</div>
+          </div>
+          <h3>Capitães da Areia</h3>
+        </a>
+        <div class="meta">
+          <span>Jorge Amado</span> · <span>Romance</span>
+        </div>
+        <div class="row" style="margin-top:0.5rem">
+          <span class="badge">14 anos</span>
+          <span class="stars">★ 4.9</span>
+          <span class="muted">(5)</span>
+        </div>
+        <p class="muted" style="margin:0.5rem 0 0;font-size:0.85rem">Favorito</p>
+      </article>
+
+      <article class="card book-card">
+        <a href="#detalhe">
+          <div class="cover">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600'%3E%3Crect fill='%231f3d2d' width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' fill='%23e8eef7' font-family='sans-serif' font-size='22' text-anchor='middle' dominant-baseline='middle'%3EHP%3C/text%3E%3C/svg%3E" alt="">
+          </div>
+          <h3>Harry Potter e a Pedra Filosofal</h3>
+        </a>
+        <div class="meta">
+          <span>J.K. Rowling</span> · <span>Fantasia</span>
+        </div>
+        <div class="row" style="margin-top:0.5rem">
+          <span class="badge">12 anos</span>
+          <span class="stars">★ 4.65</span>
+          <span class="muted">(210)</span>
+        </div>
+      </article>
+
+      <article class="card book-card">
+        <a href="#detalhe">
+          <div class="cover">
+            <div style="height:100%;display:flex;align-items:center;justify-content:center;color:#5c6a80;font-size:0.85rem">Sem capa</div>
+          </div>
+          <h3>A Hora da Estrela</h3>
+        </a>
+        <div class="meta">
+          <span>Clarice Lispector</span> · <span>Ficção literária</span>
+        </div>
+        <div class="row" style="margin-top:0.5rem">
+          <span class="badge">Livre</span>
+          <span class="stars">★ 4.5</span>
+          <span class="muted">(3)</span>
+        </div>
+      </article>
+    </div>
+
+    <nav class="pagination" aria-label="Paginação (demonstração)">
+      <button type="button" class="btn secondary small" disabled>Anterior</button>
+      <span class="page-info">Página 1 / 1</span>
+      <button type="button" class="btn secondary small" disabled>Próxima</button>
+    </nav>
+
+    <section id="detalhe" class="card" style="margin-top:2rem;scroll-margin-top:5rem">
+      <h2 style="margin-top:0">Detalhe do livro (layout de exemplo)</h2>
+      <p class="muted">Na aplicação real, esta página vem de <code>/books/:id</code> com dados do PostgreSQL.</p>
+      <div class="detail-layout" style="margin-top:1rem">
+        <div class="detail-cover">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g2' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232a4a6f'/%3E%3Cstop offset='1' stop-color='%23101826'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g2)' width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' fill='%23e8eef7' font-family='sans-serif' font-size='28' text-anchor='middle' dominant-baseline='middle'%3EDC%3C/text%3E%3C/svg%3E" alt="Capa de exemplo">
+        </div>
+        <div>
+          <h3 style="margin:0 0 0.25rem">Dom Casmurro</h3>
+          <p class="muted" style="margin:0">Machado de Assis · Romance · Globo (exemplo)</p>
+          <p class="muted" style="margin:0.35rem 0 0">Classificação: <strong>Livre</strong></p>
+          <div class="card" style="margin-top:1rem">
+            <h4 style="margin-top:0">Avaliações</h4>
+            <p>Média: <span class="stars">★ 4.75</span> <span class="muted">(12 avaliações)</span></p>
+            <div class="review-item">
+              <div class="row" style="justify-content:space-between">
+                <strong>Ana</strong>
+                <span class="stars">★ 5</span>
+              </div>
+              <p style="margin:0.35rem 0 0">Obra essencial da literatura brasileira.</p>
+            </div>
+            <div class="review-item">
+              <div class="row" style="justify-content:space-between">
+                <strong>Bruno</strong>
+                <span class="stars">★ 4</span>
+              </div>
+              <p class="muted" style="margin:0.35rem 0 0;font-size:0.85rem">Comentário opcional omitido.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <strong>Preview estático</strong> — para o sistema completo, rode o projeto conforme o README (<code>npm run dev</code> + PostgreSQL).
+    </div>
+  </footer>
+</body>
+</html>

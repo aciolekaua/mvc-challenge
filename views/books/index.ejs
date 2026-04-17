@@ -1,0 +1,76 @@
+<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:1rem">
+  <h1 style="margin:0">Livros</h1>
+  <% if (currentUser) { %>
+    <a class="btn" href="/books/new">Novo livro</a>
+  <% } %>
+</div>
+
+<form class="toolbar card" method="get" action="/books">
+  <div class="field">
+    <label for="q">Busca (título, autor ou gênero)</label>
+    <input id="q" name="q" type="text" value="<%= q %>" placeholder="Ex.: fantasia, Clarice...">
+  </div>
+  <div class="field">
+    <label for="classification">Classificação</label>
+    <select id="classification" name="classification">
+      <option value="">Todas</option>
+      <% classifications.forEach(function (c) { %>
+        <option value="<%= c %>" <%= classification === c ? 'selected' : '' %>>
+          <%= classificationLabels[c] || c %>
+        </option>
+      <% }) %>
+    </select>
+  </div>
+  <button class="btn secondary" type="submit">Filtrar</button>
+  <% if (q || classification) { %>
+    <a class="btn secondary" href="/books">Limpar</a>
+  <% } %>
+</form>
+
+<p class="muted"><%= total %> livro(s) — página <%= currentPage %> de <%= totalPages %></p>
+
+<div class="grid books">
+  <% books.forEach(function (b) { %>
+    <article class="card book-card">
+      <a href="/books/<%= b.id %>">
+        <div class="cover">
+          <% if (b.cover_path) { %>
+            <img src="<%= publicCoverUrl(b.cover_path) %>" alt="">
+          <% } else { %>
+            <div style="height:100%;display:flex;align-items:center;justify-content:center;color:#5c6a80;font-size:0.85rem">Sem capa</div>
+          <% } %>
+        </div>
+        <h3><%= b.title %></h3>
+      </a>
+      <div class="meta">
+        <span><%= b.author %></span> · <span><%= b.genre %></span>
+      </div>
+      <div class="row" style="margin-top:0.5rem">
+        <span class="badge"><%= classificationLabels[b.classification] || b.classification %></span>
+        <% if (Number(b.review_count) > 0) { %>
+          <span class="stars" aria-label="Média de avaliações">★ <%= b.avg_rating %></span>
+          <span class="muted">(<%= b.review_count %>)</span>
+        <% } else { %>
+          <span class="muted">Sem avaliações</span>
+        <% } %>
+      </div>
+      <% if (currentUser && b.is_favorite) { %>
+        <p class="muted" style="margin:0.5rem 0 0;font-size:0.85rem">Favorito</p>
+      <% } %>
+    </article>
+  <% }) %>
+</div>
+
+<% if (!books.length) { %>
+  <div class="card"><p>Nenhum livro encontrado.</p></div>
+<% } %>
+
+<nav class="pagination" aria-label="Paginação">
+  <% if (currentPage > 1) { %>
+    <a class="btn secondary small" href="/books?page=<%= currentPage - 1 %><%= q ? '&q=' + encodeURIComponent(q) : '' %><%= classification ? '&classification=' + encodeURIComponent(classification) : '' %>">Anterior</a>
+  <% } %>
+  <span class="page-info">Página <%= currentPage %> / <%= totalPages %></span>
+  <% if (currentPage < totalPages) { %>
+    <a class="btn secondary small" href="/books?page=<%= currentPage + 1 %><%= q ? '&q=' + encodeURIComponent(q) : '' %><%= classification ? '&classification=' + encodeURIComponent(classification) : '' %>">Próxima</a>
+  <% } %>
+</nav>

@@ -1,0 +1,27 @@
+<div class="card" style="max-width:520px;margin:0 auto">
+  <h1>Cadastro</h1>
+  <% if (errors && errors.length) { %>
+    <div class="alert error">
+      <ul style="margin:0;padding-left:1.2rem">
+        <% errors.forEach(function (m) { %><li><%= m %></li><% }) %>
+      </ul>
+    </div>
+  <% } %>
+  <form method="post" action="/register">
+    <div class="field">
+      <label for="name">Nome</label>
+      <input id="name" name="name" type="text" required maxlength="255">
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="password">Senha</label>
+      <input id="password" name="password" type="password" autocomplete="new-password" required minlength="6">
+      <p class="muted" style="margin:0.35rem 0 0;font-size:0.85rem">Mínimo de 6 caracteres.</p>
+    </div>
+    <button class="btn" type="submit">Cadastrar</button>
+    <a class="muted" href="/login" style="margin-left:1rem">Já tenho conta</a>
+  </form>
+</div>

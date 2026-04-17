@@ -1,0 +1,47 @@
+<div class="card" style="max-width:640px">
+  <h1><%= title %></h1>
+  <% if (errors && errors.length) { %>
+    <div class="alert error">
+      <ul style="margin:0;padding-left:1.2rem">
+        <% errors.forEach(function (m) { %><li><%= m %></li><% }) %>
+      </ul>
+    </div>
+  <% } %>
+  <form method="post" action="<%= isEdit ? '/books/' + book.id : '/books' %>" enctype="multipart/form-data">
+    <% if (isEdit) { %>
+      <input type="hidden" name="_method" value="PUT">
+    <% } %>
+    <div class="field">
+      <label for="title">Título</label>
+      <input id="title" name="title" type="text" required maxlength="500" value="<%= book.title || '' %>">
+    </div>
+    <div class="field">
+      <label for="classification">Classificação</label>
+      <select id="classification" name="classification" required>
+        <% classifications.forEach(function (c) { %>
+          <option value="<%= c %>" <%= (book.classification === c) ? 'selected' : '' %>>
+            <%= classificationLabels[c] || c %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="field">
+      <label for="genre">Gênero</label>
+      <input id="genre" name="genre" type="text" required maxlength="255" value="<%= book.genre || '' %>">
+    </div>
+    <div class="field">
+      <label for="author">Autor</label>
+      <input id="author" name="author" type="text" required maxlength="255" value="<%= book.author || '' %>">
+    </div>
+    <div class="field">
+      <label for="publisher">Editora</label>
+      <input id="publisher" name="publisher" type="text" required maxlength="255" value="<%= book.publisher || '' %>">
+    </div>
+    <div class="field">
+      <label for="cover">Capa (imagem, opcional, máx. 3MB)</label>
+      <input id="cover" name="cover" type="file" accept="image/*">
+    </div>
+    <button class="btn" type="submit">Salvar</button>
+    <a class="btn secondary" href="/books">Cancelar</a>
+  </form>
+</div>
